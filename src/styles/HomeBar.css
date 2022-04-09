@@ -1,0 +1,7 @@
+
+.home-content {
+    width: 80%;
+    padding: 5vh 5vw;
+    display: grid;
+    grid-template-rows: 1fr 9fr ;
+}

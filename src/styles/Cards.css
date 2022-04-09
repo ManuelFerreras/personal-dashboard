@@ -1,0 +1,71 @@
+.card {
+    background-color: transparent;
+    border: none;
+
+}
+
+.card-content {
+    margin: 4vh 4vw;
+    align-self: center;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    height: 100%;
+    gap: 1rem;
+    padding-bottom: 5vh;
+}
+
+.profit-card {
+    background-image: linear-gradient(135deg, rgba(26, 255, 0, 0.1), transparent);
+}
+
+.loss-card {
+    background-image: linear-gradient(135deg, rgba(255, 0, 0, 0.1), transparent);
+}
+
+.info-card {
+    height: 100%;
+    background-color: #303245;
+    border-radius: 15px;
+    -webkit-box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.2); 
+    box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.2);  
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.info-card p {
+    font-size: 0.7rem;
+}
+
+.card-comparison {
+    align-self: center;
+    justify-self: center;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: space-between;
+    padding: 2rem;
+    border-radius: 50%;
+    background-image: linear-gradient(180deg, #5273759c -50%, #5273750e 50%, transparent);
+    height: 6rem;
+    width: 6rem;
+}
+.card-comparison p {
+    margin: 0;
+    font-size: 0.7rem;
+    line-height: 0;
+}
+
+.profit {
+    color: #ABCDAB;
+}
+.loss {
+    color: #cdabab;
+}
+
+.card-content .value {
+    font-size: 2rem;
+    font-weight: bold;
+}
