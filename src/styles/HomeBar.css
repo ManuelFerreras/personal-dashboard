@@ -5,3 +5,7 @@
     display: grid;
     grid-template-rows: 1fr 9fr ;
 }
+
+.homebar-mid {
+    overflow:visible
+}

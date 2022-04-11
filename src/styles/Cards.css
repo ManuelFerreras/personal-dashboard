@@ -19,10 +19,20 @@
 
 .profit-card {
     background-image: linear-gradient(135deg, rgba(26, 255, 0, 0.1), transparent);
+    transition: background-image 3s;
+}
+.profit-card:hover {
+    background-image: linear-gradient(135deg, rgba(26, 255, 0, 0.125), transparent);
+    transition: background-image 3s;
 }
 
 .loss-card {
     background-image: linear-gradient(135deg, rgba(255, 0, 0, 0.1), transparent);
+    transition: background-image 3s;
+}
+.loss-card:hover {
+    background-image: linear-gradient(135deg, rgba(255, 0, 0, 0.125), transparent);
+    transition: background-image 3s;
 }
 
 .info-card {

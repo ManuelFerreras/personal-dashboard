@@ -1,4 +1,5 @@
 import "./styles/App.css";
+import "./styles/Menus.css";
 
 import SideBar from "./components/SideBar";
 import HomeBar from "./components/HomeBar";
@@ -13,7 +14,10 @@ import Expenses from "./components/Expenses";
 import { useState } from "react";
 
 function App() {
-  const [menu, setMenu] = useState(0)
+  const [menu, setMenu] = useState(0);
+  const [earnings, setEarnings] = useState([]);
+  const [expenses, setExpenses] = useState([]);
+  const [investments, setInvestments] = useState([]);
 
   return (
     <>
@@ -25,13 +29,13 @@ function App() {
         {
 
           menu == 0? (
-            <HomeBar />
+            <HomeBar earnings={earnings} expenses={expenses} investments={investments} />
           ) : menu == 1? (
-            <Earnings />
+            <Earnings earnings={earnings} setEarnings={setEarnings} />
           ) : menu == 2? (
-            <Expenses />
+            <Expenses expenses={expenses} setExpenses={setExpenses} />
           ) : menu == 3? (
-            <Investments />
+            <Investments investments={investments} setInvestments={setInvestments} />
           ) : menu == 4? (
             <Study />
           ) : menu == 5? (
