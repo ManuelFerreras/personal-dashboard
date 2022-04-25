@@ -79,3 +79,49 @@
     font-size: 2rem;
     font-weight: bold;
 }
+
+
+.mid-invests {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2vmin;
+}
+
+.bot-invests .earning-input {
+    margin-right: 0;
+}
+
+.bot-invests {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2vmin;
+}
+
+.bot-invests .btn-add {
+    grid-column: 1 / 3;
+}
+
+.mid-invests .delete-entry {
+    position: absolute;
+    right: 1rem;
+    cursor: pointer;
+    top: 1rem;
+}
+
+.card-entry {
+    position: relative;
+    height: 30vh;
+    border-radius: 15px;
+    padding: 1vmin 3vmin;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.btn-add-investment-profit {
+    background-image: linear-gradient(135deg, #6f9860 90%, transparent);
+}
+.btn-add-investment-loss {
+    background-image: linear-gradient(135deg, #986060 90%, transparent);
+}

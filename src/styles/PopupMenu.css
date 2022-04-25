@@ -1,0 +1,30 @@
+.menu-bg {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.4);
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    backdrop-filter: blur(12px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu {
+    background-image: linear-gradient(175deg, rgba(26, 255, 0, 0.05), transparent);
+    border:1px solid rgba(26, 255, 0, 0.2);
+    min-height: 30vh;
+    min-width: 40vw;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    padding: 4vh 4vw;
+    justify-content: space-between;
+    position: absolute;
+}
+
+.delete-entry-invest {
+    top: 1vh;
+    right: 1vh;
+}
