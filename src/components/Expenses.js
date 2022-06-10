@@ -8,7 +8,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons'
 function Expenses({ expenses, setExpenses }) {
 
     const months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "Dicember"];
-    let month = new Date().getMonth();
+    const month = new Date().getMonth() + 1;
 
     return(
         <>

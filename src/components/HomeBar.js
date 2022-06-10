@@ -5,10 +5,10 @@ import "../styles/Cards.css";
 import TextCard from "./TextCard";
 
 
-function HomeBar({ earnings, expenses, investments }) {
+function HomeBar({ earnings, expenses, investments, userInfo }) {
 
     const months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "Dicember"];
-    let month = new Date().getMonth();
+    const month = new Date().getMonth() + 1;
 
     let totalEarnings = 0;
     let lastMonthEarnings = 100;
@@ -34,7 +34,7 @@ function HomeBar({ earnings, expenses, investments }) {
         
             <div className="home-content">
                 <div className="top">
-                    <h1>Hello Manu</h1>
+                    <h1>Hello, {userInfo["username"]}</h1>
                     <p>Welcome Back!</p>
                 </div>
 
