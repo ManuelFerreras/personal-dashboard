@@ -5,7 +5,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
 
 
-function Earnings({ earnings, setEarnings }) {
+function Earnings({ earnings, deleteEarning, addEarning }) {
 
     const months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "Dicember"];
     const month = new Date().getMonth() + 1;
@@ -25,12 +25,10 @@ function Earnings({ earnings, setEarnings }) {
                         <p>No Earnings Registered Yet!</p>
                     ) : earnings.map((item,index) => {
                         return ( <div className="entry entry-prof" key={index}>
-                            <p className="entry-value">{item[0]}</p>
-                            <p>{item[1]}</p>
+                            <p className="entry-value">{item["amount"]}</p>
+                            <p>{item["description"]}</p>
                             <FontAwesomeIcon icon={faXmark} className="delete-entry" onClick={() => {
-                                let arr = earnings;
-                                arr.splice(index, 1);
-                                setEarnings([...arr]);
+                                deleteEarning(item["_id"]);
                             }} />
                         </div> );
                     })}
@@ -51,7 +49,7 @@ function Earnings({ earnings, setEarnings }) {
                     }}></input>
                     <input className="earning-input" id="earning-reason" type="text" min="0" placeholder="Reason"></input>
                     <button className="btn-add soft-shadow" onClick={() => {
-                        setEarnings([...earnings, [document.querySelector("#earning").value, document.querySelector("#earning-reason").value]])
+                        addEarning(document.querySelector("#earning").value.substring(1, document.querySelector("#earning").value.length), document.querySelector("#earning-reason").value);
                     }}>Add New Earning</button>
                 </div>
             </div>

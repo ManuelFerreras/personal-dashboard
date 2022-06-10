@@ -38,9 +38,101 @@ function App() {
 
     if("statusCode" in res === false) {
         setUserInfo(res);
+        await getUserEarnings(authToken);
+        await getUserExpenses(authToken);
     } else {
         window.location.reload();
     }
+
+  }
+
+  const getUserEarnings = async (authToken) => {
+
+    const response = await fetch(backendUrl + "money-earning/getEarnings", {
+      headers: {
+        Authorization: `Bearer ${authToken["access_token"]}`
+      }
+    });
+
+    const res = await response.json();
+    
+    console.log(res);
+
+    setEarnings(res);
+
+  }
+
+  const addUserEarning = async (amount, description) => {
+    console.log(userToken);
+    console.log(amount);
+    console.log(description);
+
+    await fetch(backendUrl + `money-earning/newEarning?amount=${amount}&description=${description}`, {
+      headers: {
+        Authorization: `Bearer ${userToken["access_token"]}`
+      },
+      method: 'POST',
+    });
+
+    getUserEarnings(userToken);
+
+  }
+
+  const deleteEarning = async (id) => {
+
+    await fetch(backendUrl + `money-earning/delEarning?id=${id}`, {
+      headers: {
+        Authorization: `Bearer ${userToken["access_token"]}`
+      },
+      method: 'POST',
+    });
+
+    getUserEarnings(userToken);
+
+  }
+
+  const getUserExpenses = async (authToken) => {
+
+    const response = await fetch(backendUrl + "money-expense/getExpenses", {
+      headers: {
+        Authorization: `Bearer ${authToken["access_token"]}`
+      }
+    });
+
+    const res = await response.json();
+    
+    console.log(res);
+
+    setExpenses(res);
+
+  }
+
+  const addUserExpense = async (amount, description) => {
+    console.log(userToken);
+    console.log(amount);
+    console.log(description);
+
+    await fetch(backendUrl + `money-expense/newExpense?amount=${amount}&description=${description}`, {
+      headers: {
+        Authorization: `Bearer ${userToken["access_token"]}`
+      },
+      method: 'POST',
+    });
+
+    getUserExpenses(userToken);
+
+  }
+
+  const deleteExpense = async (id) => {
+
+    await fetch(backendUrl + `money-expense/delExpense?id=${id}`, {
+      headers: {
+        Authorization: `Bearer ${userToken["access_token"]}`
+      },
+      method: 'POST',
+    });
+
+    getUserExpenses(userToken);
 
   }
 
@@ -66,9 +158,9 @@ function App() {
                   menu == 0? (
                     <HomeBar earnings={earnings} expenses={expenses} investments={investments} userInfo={userInfo} />
                   ) : menu == 1? (
-                    <Earnings earnings={earnings} setEarnings={setEarnings} />
+                    <Earnings earnings={earnings} deleteEarning={deleteEarning} addEarning={addUserEarning} />
                   ) : menu == 2? (
-                    <Expenses expenses={expenses} setExpenses={setExpenses} />
+                    <Expenses expenses={expenses} deleteExpense={deleteExpense} addExpense={addUserExpense} />
                   ) : menu == 3? (
                     <Investments investments={investments} setInvestments={setInvestments} />
                   ) : menu == 4? (

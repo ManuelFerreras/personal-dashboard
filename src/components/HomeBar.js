@@ -11,22 +11,22 @@ function HomeBar({ earnings, expenses, investments, userInfo }) {
     const month = new Date().getMonth() + 1;
 
     let totalEarnings = 0;
-    let lastMonthEarnings = 100;
+    let lastMonthEarnings = 0;
 
     let totalExpenses = 0;
-    let lastMonthExpenses = -100;
+    let lastMonthExpenses = 0;
 
     let totalAddedInvestments = 0;
-    let lastMonthAddedInvestments = 120;
+    let lastMonthAddedInvestments = 0;
 
     earnings.map(val => {
-        totalEarnings += parseInt(val[0].substring(1, val[0].length));
+        totalEarnings += parseInt(val["amount"]);
     });
     expenses.map(val => {
-        totalExpenses -= parseInt(val[0].substring(1, val[0].length));
+        totalExpenses -= parseInt(val["amount"]);
     });
     investments.map(val => {
-        totalAddedInvestments += parseInt(val[0].substring(1, val[0].length));
+        totalAddedInvestments += parseInt(val["amount"]);
     });
 
     return(

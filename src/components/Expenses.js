@@ -5,7 +5,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
 
 
-function Expenses({ expenses, setExpenses }) {
+function Expenses({ expenses, deleteExpense, addExpense }) {
 
     const months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "Dicember"];
     const month = new Date().getMonth() + 1;
@@ -26,12 +26,10 @@ function Expenses({ expenses, setExpenses }) {
                     ) : expenses.map((item,index) => {
                         return ( 
                         <div className="entry entry-loss" key={index}>
-                            <p className="entry-value">{item[0]}</p>
-                            <p>{item[1]}</p>
+                            <p className="entry-value">{item["amount"]}</p>
+                            <p>{item["description"]}</p>
                             <FontAwesomeIcon icon={faXmark} className="delete-entry" onClick={() => {
-                                let arr = expenses;
-                                arr.splice(index, 1);
-                                setExpenses([...arr]);
+                                deleteExpense(item["_id"]);
                             }} />
                         </div> );
                     })}
@@ -52,7 +50,7 @@ function Expenses({ expenses, setExpenses }) {
                     }}></input>
                     <input className="earning-input" id="earning-reason" type="text" min="0" placeholder="Reason"></input>
                     <button className="btn-add soft-shadow" onClick={() => {
-                        setExpenses([...expenses, [document.querySelector("#earning").value, document.querySelector("#earning-reason").value]])
+                        addExpense(document.querySelector("#earning").value.substring(1, document.querySelector("#earning").value.length), document.querySelector("#earning-reason").value)
                     }}>Add New Expense</button>
                 </div>
             </div>
