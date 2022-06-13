@@ -26,7 +26,7 @@ function Expenses({ expenses, deleteExpense, addExpense }) {
                     ) : expenses.map((item,index) => {
                         return ( 
                         <div className="entry entry-loss" key={index}>
-                            <p className="entry-value">{item["amount"]}</p>
+                            <p className="entry-value">${item["amount"]}</p>
                             <p>{item["description"]}</p>
                             <FontAwesomeIcon icon={faXmark} className="delete-entry" onClick={() => {
                                 deleteExpense(item["_id"]);

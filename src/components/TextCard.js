@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowTrendDown, faArrowTrendUp, faHouseChimney } from '@fortawesome/free-solid-svg-icons'
 
 
-function TextCard({ title, body, number, comparison, decorator }) {
+function TextCard({ title, body, number, comparison, decorator, hidden }) {
 
     return(
         <>
@@ -14,7 +14,7 @@ function TextCard({ title, body, number, comparison, decorator }) {
                 <div className="card-content">
                     <h3>{title}</h3>
                     <p>{body}</p>
-                    <p className={number >= 0? ("profit value") : ("loss value")}>{decorator}{number}</p>
+                    <p className={number >= 0? ("profit value") : ("loss value")}>{decorator}{hidden? number : "***"}</p>
                 </div>
 
                 <div className={comparison >= 0? ("profit card-comparison") : ("loss card-comparison")}>
@@ -24,7 +24,7 @@ function TextCard({ title, body, number, comparison, decorator }) {
                         <FontAwesomeIcon className="loss" icon={faArrowTrendDown} />
                     )}
                     
-                    <p className={comparison >= 0? ("profit") : ("loss")} >{comparison >= 0? ("+") : ("")}{comparison}%</p>
+                    <p className={comparison >= 0? ("profit") : ("loss")} >{comparison >= 0? ("+") : ("")}{hidden? (comparison == "Infinity"? "0" : (comparison == NaN? "0" : comparison)) : "**"}%</p>
                 </div>
 
             </div>

@@ -24,8 +24,6 @@ function App() {
   const [userInfo, setUserInfo] = useState({username: ""});
 
   const getUserInfo = async (authToken) => {
-    console.log(authToken);
-
     const response = await fetch(backendUrl + "profile", {
       headers: {
         Authorization: `Bearer ${authToken["access_token"]}`
@@ -33,8 +31,6 @@ function App() {
     });
 
     const res = await response.json();
-    
-    console.log(res);
 
     if("statusCode" in res === false) {
         setUserInfo(res);
@@ -55,18 +51,13 @@ function App() {
     });
 
     const res = await response.json();
-    
-    console.log(res);
+
 
     setEarnings(res);
 
   }
 
   const addUserEarning = async (amount, description) => {
-    console.log(userToken);
-    console.log(amount);
-    console.log(description);
-
     await fetch(backendUrl + `money-earning/newEarning?amount=${amount}&description=${description}`, {
       headers: {
         Authorization: `Bearer ${userToken["access_token"]}`
@@ -100,17 +91,13 @@ function App() {
     });
 
     const res = await response.json();
-    
-    console.log(res);
+
 
     setExpenses(res);
 
   }
 
   const addUserExpense = async (amount, description) => {
-    console.log(userToken);
-    console.log(amount);
-    console.log(description);
 
     await fetch(backendUrl + `money-expense/newExpense?amount=${amount}&description=${description}`, {
       headers: {

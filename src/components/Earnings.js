@@ -1,37 +1,57 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash, faXmark } from '@fortawesome/free-solid-svg-icons'
+import TextCard from "./TextCard";
 
 
 
 function Earnings({ earnings, deleteEarning, addEarning }) {
 
+    const [showStats, setShowStats] = useState(false);
+
     const months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "Dicember"];
     const month = new Date().getMonth() + 1;
+
+    let totalEarnings = 0;
+    let lastMonthEarnings = 0;
+
+    earnings.map(val => {
+        totalEarnings += parseInt(val["amount"]);
+    });
 
     return(
         <>
         
             <div className="home-content">
                 <div className="top">
-                    <h1>{months[month]} Earnings</h1>
+                    <div className="overview-text">
+                        <h1>{months[month]} Earnings</h1>
+                        {showStats? <FontAwesomeIcon icon={faEye} className="show-btn" onClick={() => setShowStats(false)} /> : <FontAwesomeIcon icon={faEyeSlash} className="show-btn" onClick={() => setShowStats(true)} />}
+                    </div>
+                    
                 </div>
 
 
-                <div className={earnings.length == 0? "mid no-content" : "mid"}>
+                <div className="mid-container">
 
-                    {earnings.length == 0? (
-                        <p>No Earnings Registered Yet!</p>
-                    ) : earnings.map((item,index) => {
-                        return ( <div className="entry entry-prof" key={index}>
-                            <p className="entry-value">{item["amount"]}</p>
-                            <p>{item["description"]}</p>
-                            <FontAwesomeIcon icon={faXmark} className="delete-entry" onClick={() => {
-                                deleteEarning(item["_id"]);
-                            }} />
-                        </div> );
-                    })}
+                    <div className={earnings.length == 0? "mid no-content" : "mid"}>
+
+                        {earnings.length == 0? (
+                            <p>No Earnings Registered Yet!</p>
+                        ) : earnings.map((item,index) => {
+                            return ( <div className="entry entry-prof" key={index}>
+                                <p className="entry-value">${showStats? item["amount"] : "***"}</p>
+                                <p>{item["description"]}</p>
+                                <FontAwesomeIcon icon={faXmark} className="delete-entry" onClick={() => {
+                                    deleteEarning(item["_id"]);
+                                }} />
+                            </div> );
+                        })}
+
+                    </div>
+
+                    <TextCard title="Earnings" body="Total Earnings This Month" number={totalEarnings} comparison={Math.round((totalEarnings * 100 / lastMonthEarnings) - 100)} decorator="$" hidden={showStats} />     
 
                 </div>
 

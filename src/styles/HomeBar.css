@@ -9,3 +9,18 @@
 .homebar-mid {
     overflow:visible
 }
+
+.show-btn {
+    cursor: pointer;
+    margin-left: 1rem;
+}
+
+.overview-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.overview-text h2 {
+    margin: 0;
+}

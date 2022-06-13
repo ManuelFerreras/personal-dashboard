@@ -26,8 +26,6 @@ function LoginMenu({ setUserToken, getUserInfo }) {
             })
     
             const res = await response.json();
-    
-            console.log(res);
 
             if("statusCode" in res === false) {
                 setUserToken(res);
