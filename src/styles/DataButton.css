@@ -1,0 +1,16 @@
+.show-data {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+
+.data {
+    display: flex;
+    align-items: center;
+    padding-left: 2rem;
+    cursor: pointer;
+}
+
+.data p {
+    margin: 0;
+}

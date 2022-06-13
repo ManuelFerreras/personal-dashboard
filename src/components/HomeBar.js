@@ -1,16 +1,10 @@
-import React, { useState } from "react";
 import "../styles/HomeBar.css";
 import "../styles/Cards.css";
 
 import TextCard from "./TextCard";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
-
-function HomeBar({ earnings, expenses, investments, userInfo }) {
-
-    const [showStats, setShowStats] = useState(false);
+function HomeBar({ earnings, expenses, investments, userInfo, showStats }) {
 
     const months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "Dicember"];
     const month = new Date().getMonth() + 1;
@@ -24,15 +18,15 @@ function HomeBar({ earnings, expenses, investments, userInfo }) {
     let totalAddedInvestments = 0;
     let lastMonthAddedInvestments = 0;
 
-    earnings.map(val => {
-        totalEarnings += parseInt(val["amount"]);
-    });
-    expenses.map(val => {
-        totalExpenses -= parseInt(val["amount"]);
-    });
-    investments.map(val => {
-        totalAddedInvestments += parseInt(val["amount"]);
-    });
+    earnings.map(val => (
+        totalEarnings += parseInt(val["amount"])
+    ));
+    expenses.map(val => (
+        totalExpenses -= parseInt(val["amount"])
+    ));
+    investments.map(val => (
+        totalAddedInvestments += parseInt(val["amount"])
+    ));
 
     return(
         <>
@@ -47,7 +41,6 @@ function HomeBar({ earnings, expenses, investments, userInfo }) {
                 <div className="mid homebar-mid">
                     <div className="overview-text">
                         <h2 className="text-center">{months[month]} Overview</h2>
-                        {showStats? <FontAwesomeIcon icon={faEye} className="show-btn" onClick={() => setShowStats(false)} /> : <FontAwesomeIcon icon={faEyeSlash} className="show-btn" onClick={() => setShowStats(true)} />}
                     </div>
                     
                     <div className="cards">

@@ -3,9 +3,6 @@ import fetch from 'node-fetch';
 
 import "../styles/LoginMenu.css";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
-
 function LoginMenu({ setUserToken, getUserInfo }) {
 
     const backendUrl = "http://localhost:3001/"

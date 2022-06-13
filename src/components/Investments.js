@@ -7,7 +7,7 @@ import PopupMenu from "./PopupMenu";
 
 
 
-function Earnings({ investments, setInvestments }) {
+function Earnings({ investments, deleteInvestment, addInvestment, showStats }) {
 
     const [popupMenuOpened, setPopupMenuOpened] = useState(false);
     const [popupMenuTitle, setPopupMenuTitle] = useState("");
@@ -28,18 +28,16 @@ function Earnings({ investments, setInvestments }) {
                         <p>No Investments Registered Yet!</p>
                     ) : investments.map((item,index) => {
                         return ( 
-                        <div className={parseInt(item[0]) <= parseInt(item[1]) ? "card-entry entry-prof" : "card-entry entry-loss"} key={index}>
-                            <h2 className="text-center">{item[3]}</h2>
-                            <p className="entry-value">Invested: ${item[0]}</p>
-                            <p>Returned: ${item[1]}</p>
-                            <p>Description: {item[2]}</p>
+                        <div className={parseInt(item["amount"]) <= parseInt(item["returned_amount"]) ? "card-entry entry-prof" : "card-entry entry-loss"} key={index}>
+                            <h2 className="text-center">{item["title"]}</h2>
+                            <p className="entry-value">Invested: ${item["amount"]}</p>
+                            <p>Returned: ${item["returned_amount"]}</p>
+                            <p>Description: {item["description"]}</p>
                             <FontAwesomeIcon icon={faXmark} className="delete-entry" onClick={() => {
-                                let arr = investments;
-                                arr.splice(index, 1);
-                                setInvestments([...arr]);
+                                deleteInvestment(item["_id"]);
                             }} />
-                            <button className={parseInt(item[0]) <= parseInt(item[1]) ? "btn-add btn-add-investment-profit soft-shadow" : "btn-add btn-add-investment-loss soft-shadow"} onClick={() => {
-                                setPopupMenuTitle(item[3]);
+                            <button className={parseInt(item["amount"]) <= parseInt(item["returned_amount"]) ? "btn-add btn-add-investment-profit soft-shadow" : "btn-add btn-add-investment-loss soft-shadow"} onClick={() => {
+                                setPopupMenuTitle(item["title"]);
                                 setPopupMenuOpened(true);
                                 setPopupInvestId(index);
                             }}>Add Returned Money</button>
@@ -73,10 +71,10 @@ function Earnings({ investments, setInvestments }) {
                     }}></input>
                     <input className="earning-input" id="earning-description" type="text" min="0" placeholder="Investment Description"></input>
                     <button className="btn-add soft-shadow" onClick={() => {
-                        setInvestments([...investments, [document.querySelector("#earning").value.toString().substring(1, document.querySelector("#earning").value.toString().length), document.querySelector("#earning-returned").value.toString().substring(1, document.querySelector("#earning-returned").value.toString().length), document.querySelector("#earning-description").value, document.querySelector("#earning-title").value]])
+                        addInvestment(document.querySelector("#earning").value.toString().substring(1, document.querySelector("#earning").value.toString().length), document.querySelector("#earning-returned").value.toString().substring(1, document.querySelector("#earning-returned").value.toString().length), document.querySelector("#earning-title").value, document.querySelector("#earning-description").value);
                     }}>Add New Investment</button>
 
-                    { popupMenuOpened? <PopupMenu setPopupMenuOpened={setPopupMenuOpened} popupMenuTitle={popupMenuTitle} investments={investments} setInvestments={setInvestments} popupInvestId={popupInvestId} /> : null }
+                    { popupMenuOpened? <PopupMenu setPopupMenuOpened={setPopupMenuOpened} popupMenuTitle={popupMenuTitle} investments={investments} popupInvestId={popupInvestId} /> : null }
                     
 
                 </div>

@@ -3,9 +3,10 @@ import "../styles/SideBar.css";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowDownAZ, faBook, faBullseye, faChartLine, faDrawPolygon, faDumbbell, faHouseChimney, faMoneyBill1Wave, faMoneyBillTrendUp, faMoneyBillWheat, faNoteSticky } from '@fortawesome/free-solid-svg-icons'
+import DataButton from "./DataButton";
 
 
-function SideBar({ menu, setMenu }) {
+function SideBar({ menu, setMenu, showStats, setShowStats }) {
 
     return(
         <>
@@ -24,9 +25,10 @@ function SideBar({ menu, setMenu }) {
                     <p className={menu == 6? "link selected" : "link"} onClick={() => setMenu(6)}><FontAwesomeIcon icon={faBullseye} /> Objectives</p>
                     <p className={menu == 7? "link selected" : "link"} onClick={() => setMenu(7)}><FontAwesomeIcon icon={faNoteSticky} /> Notes</p>
                 </div>
+
+                <DataButton showStats={showStats} setShowStats={setShowStats} />
             
             </div>
-            
 
         </>
     );

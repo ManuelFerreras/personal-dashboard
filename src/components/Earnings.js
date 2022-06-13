@@ -1,14 +1,10 @@
-import React, { useState } from "react";
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faEyeSlash, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import TextCard from "./TextCard";
 
 
 
-function Earnings({ earnings, deleteEarning, addEarning }) {
-
-    const [showStats, setShowStats] = useState(false);
+function Earnings({ earnings, deleteEarning, addEarning, showStats }) {
 
     const months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "Dicember"];
     const month = new Date().getMonth() + 1;
@@ -16,9 +12,9 @@ function Earnings({ earnings, deleteEarning, addEarning }) {
     let totalEarnings = 0;
     let lastMonthEarnings = 0;
 
-    earnings.map(val => {
-        totalEarnings += parseInt(val["amount"]);
-    });
+    earnings.map(val => (
+        totalEarnings += parseInt(val["amount"])
+    ));
 
     return(
         <>
@@ -26,18 +22,16 @@ function Earnings({ earnings, deleteEarning, addEarning }) {
             <div className="home-content">
                 <div className="top">
                     <div className="overview-text">
-                        <h1>{months[month]} Earnings</h1>
-                        {showStats? <FontAwesomeIcon icon={faEye} className="show-btn" onClick={() => setShowStats(false)} /> : <FontAwesomeIcon icon={faEyeSlash} className="show-btn" onClick={() => setShowStats(true)} />}
+                        <h1>{months[month]} Expenses</h1>
                     </div>
-                    
                 </div>
 
 
                 <div className="mid-container">
 
-                    <div className={earnings.length == 0? "mid no-content" : "mid"}>
+                    <div className={earnings.length === 0? "mid no-content" : "mid"}>
 
-                        {earnings.length == 0? (
+                        {earnings.length === 0? (
                             <p>No Earnings Registered Yet!</p>
                         ) : earnings.map((item,index) => {
                             return ( <div className="entry entry-prof" key={index}>
@@ -58,7 +52,7 @@ function Earnings({ earnings, deleteEarning, addEarning }) {
 
                 <div className="bot">
                     <input className="earning-input" id="earning" placeholder="$0" onChange={(val) => {
-                        if (val["target"].value[0] != "$") {
+                        if (val["target"].value[0] !== "$") {
                             let newVal = "$" + val["target"].value.toString();
                             val["target"].value = newVal;
                         }

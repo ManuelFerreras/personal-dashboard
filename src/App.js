@@ -12,6 +12,7 @@ import Notes from "./components/Notes";
 import Expenses from "./components/Expenses";
 
 import { useState } from "react";
+import DataButton from "./components/DataButton";
 
 function App() {
   const backendUrl = "http://localhost:3001/"
@@ -22,6 +23,8 @@ function App() {
   const [investments, setInvestments] = useState([]);
   const [userToken, setUserToken] = useState(null);
   const [userInfo, setUserInfo] = useState({username: ""});
+
+  const [showStats, setShowStats] = useState(false);
 
   const getUserInfo = async (authToken) => {
     const response = await fetch(backendUrl + "profile", {
@@ -36,6 +39,7 @@ function App() {
         setUserInfo(res);
         await getUserEarnings(authToken);
         await getUserExpenses(authToken);
+        await getUserInvestments(authToken);
     } else {
         window.location.reload();
     }
@@ -123,6 +127,46 @@ function App() {
 
   }
 
+  const getUserInvestments = async (authToken) => {
+
+    const response = await fetch(backendUrl + "investment/getInvestments", {
+      headers: {
+        Authorization: `Bearer ${authToken["access_token"]}`
+      }
+    });
+
+    const res = await response.json();
+
+
+    setInvestments(res);
+
+  }
+
+  const addUserInvestment = async (amount, returned_amount, title, description) => {
+    await fetch(backendUrl + `investment/newInvestment?amount=${amount}&returned_amount=${returned_amount}&title=${title}&description=${description}`, {
+      headers: {
+        Authorization: `Bearer ${userToken["access_token"]}`
+      },
+      method: 'POST',
+    });
+
+    getUserInvestments(userToken);
+
+  }
+
+  const deleteInvestment = async (id) => {
+
+    await fetch(backendUrl + `investment/delInvestment?id=${id}`, {
+      headers: {
+        Authorization: `Bearer ${userToken["access_token"]}`
+      },
+      method: 'POST',
+    });
+
+    getUserInvestments(userToken);
+
+  }
+
   return (
     <>
 
@@ -138,23 +182,23 @@ function App() {
             <>
               <div className="contenedor">
 
-                <SideBar menu={menu} setMenu={setMenu} />
+                <SideBar menu={menu} setMenu={setMenu} showStats={showStats} setShowStats={setShowStats} />
 
                 {
 
-                  menu == 0? (
-                    <HomeBar earnings={earnings} expenses={expenses} investments={investments} userInfo={userInfo} />
-                  ) : menu == 1? (
-                    <Earnings earnings={earnings} deleteEarning={deleteEarning} addEarning={addUserEarning} />
-                  ) : menu == 2? (
-                    <Expenses expenses={expenses} deleteExpense={deleteExpense} addExpense={addUserExpense} />
-                  ) : menu == 3? (
-                    <Investments investments={investments} setInvestments={setInvestments} />
-                  ) : menu == 4? (
+                  menu === 0? (
+                    <HomeBar earnings={earnings} expenses={expenses} investments={investments} userInfo={userInfo} showStats={showStats} />
+                  ) : menu === 1? (
+                    <Earnings earnings={earnings} deleteEarning={deleteEarning} addEarning={addUserEarning} showStats={showStats} />
+                  ) : menu === 2? (
+                    <Expenses expenses={expenses} deleteExpense={deleteExpense} addExpense={addUserExpense} showStats={showStats} />
+                  ) : menu === 3? (
+                    <Investments investments={investments} deleteInvestment={deleteInvestment} addInvestment={addUserInvestment} showStats={showStats} />
+                  ) : menu === 4? (
                     <Study />
-                  ) : menu == 5? (
+                  ) : menu === 5? (
                     <Excercise />
-                  ) : menu == 6? (
+                  ) : menu === 6? (
                     <Objectives />
                   ) : (
                     <Notes />
