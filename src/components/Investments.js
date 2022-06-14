@@ -7,7 +7,7 @@ import PopupMenu from "./PopupMenu";
 
 
 
-function Earnings({ investments, deleteInvestment, addInvestment, showStats }) {
+function Earnings({ investments, deleteInvestment, addInvestment, addReturnedAmount, showStats }) {
 
     const [popupMenuOpened, setPopupMenuOpened] = useState(false);
     const [popupMenuTitle, setPopupMenuTitle] = useState("");
@@ -22,17 +22,17 @@ function Earnings({ investments, deleteInvestment, addInvestment, showStats }) {
                 </div>
 
 
-                <div className={investments.length == 0? "mid no-content" : "mid mid-invests"}>
+                <div className={investments.length === 0? "mid no-content" : "mid mid-invests"}>
 
-                    {investments.length == 0? (
+                    {investments.length === 0? (
                         <p>No Investments Registered Yet!</p>
                     ) : investments.map((item,index) => {
                         return ( 
                         <div className={parseInt(item["amount"]) <= parseInt(item["returned_amount"]) ? "card-entry entry-prof" : "card-entry entry-loss"} key={index}>
                             <h2 className="text-center">{item["title"]}</h2>
-                            <p className="entry-value">Invested: ${item["amount"]}</p>
-                            <p>Returned: ${item["returned_amount"]}</p>
-                            <p>Description: {item["description"]}</p>
+                            <p className="entry-value">Invested: ${showStats? item["amount"] : "***"}</p>
+                            <p>Returned: ${showStats? item["returned_amount"] : "***"}</p>
+                            <p>Description: {showStats? item["description"] : "*****"}</p>
                             <FontAwesomeIcon icon={faXmark} className="delete-entry" onClick={() => {
                                 deleteInvestment(item["_id"]);
                             }} />
@@ -50,7 +50,7 @@ function Earnings({ investments, deleteInvestment, addInvestment, showStats }) {
                 <div className="bot bot-invests">
                     <input className="earning-input" id="earning-title" type="text" min="0" placeholder="Investment Title"></input>
                     <input className="earning-input" id="earning" placeholder="Investment Amount" onChange={(val) => {
-                        if (val["target"].value[0] != "$") {
+                        if (val["target"].value[0] !== "$") {
                             let newVal = "$" + val["target"].value.toString();
                             val["target"].value = newVal;
                         }
@@ -60,7 +60,7 @@ function Earnings({ investments, deleteInvestment, addInvestment, showStats }) {
                         }
                     }}></input>
                     <input className="earning-input" id="earning-returned" placeholder="Already Returned Amount" onChange={(val) => {
-                        if (val["target"].value[0] != "$") {
+                        if (val["target"].value[0] !== "$") {
                             let newVal = "$" + val["target"].value.toString();
                             val["target"].value = newVal;
                         }
@@ -74,7 +74,7 @@ function Earnings({ investments, deleteInvestment, addInvestment, showStats }) {
                         addInvestment(document.querySelector("#earning").value.toString().substring(1, document.querySelector("#earning").value.toString().length), document.querySelector("#earning-returned").value.toString().substring(1, document.querySelector("#earning-returned").value.toString().length), document.querySelector("#earning-title").value, document.querySelector("#earning-description").value);
                     }}>Add New Investment</button>
 
-                    { popupMenuOpened? <PopupMenu setPopupMenuOpened={setPopupMenuOpened} popupMenuTitle={popupMenuTitle} investments={investments} popupInvestId={popupInvestId} /> : null }
+                    { popupMenuOpened? <PopupMenu setPopupMenuOpened={setPopupMenuOpened} popupMenuTitle={popupMenuTitle} investments={investments} popupInvestId={popupInvestId} addReturnedAmount={addReturnedAmount} /> : null }
                     
 
                 </div>

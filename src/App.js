@@ -12,14 +12,15 @@ import Notes from "./components/Notes";
 import Expenses from "./components/Expenses";
 
 import { useState } from "react";
-import DataButton from "./components/DataButton";
 
 function App() {
   const backendUrl = "http://localhost:3001/"
 
   const [menu, setMenu] = useState(0);
   const [earnings, setEarnings] = useState([]);
+  const [lastMonthEarnings, setLastMonthEarnings] = useState([]);
   const [expenses, setExpenses] = useState([]);
+  const [lastMonthExpenses, setLastMonthExpenses] = useState([]);
   const [investments, setInvestments] = useState([]);
   const [userToken, setUserToken] = useState(null);
   const [userInfo, setUserInfo] = useState({username: ""});
@@ -36,10 +37,18 @@ function App() {
     const res = await response.json();
 
     if("statusCode" in res === false) {
+        const currentDate = new Date();
+
         setUserInfo(res);
-        await getUserEarnings(authToken);
-        await getUserExpenses(authToken);
-        await getUserInvestments(authToken);
+
+        setEarnings(await getUserEarningsForMonth(authToken, currentDate.getFullYear(), currentDate.getMonth() + 1)); // Get this Month Earnings.
+        setExpenses(await getUserExpensesForMonth(authToken, currentDate.getFullYear(), currentDate.getMonth() + 1)); // Get this Month Expenses.
+      
+        setLastMonthEarnings(await getUserEarningsForMonth(authToken, currentDate.getFullYear(), currentDate.getMonth())); // Get Last Month Earnings.
+        setLastMonthExpenses(await getUserExpensesForMonth(authToken, currentDate.getFullYear(), currentDate.getMonth())); // Get Last Month Expenses.
+        
+        await getUserInvestments(authToken); // Get All User Investments.
+
     } else {
         window.location.reload();
     }
@@ -58,6 +67,20 @@ function App() {
 
 
     setEarnings(res);
+
+  }
+
+  const getUserEarningsForMonth = async (authToken, year, month) => {
+
+    const response = await fetch(backendUrl + `money-earning/getEarningsForMonth?from=${year}-${month}-01&to=${year}-${month}-31`, {
+      headers: {
+        Authorization: `Bearer ${authToken["access_token"]}`
+      }
+    });
+
+    const res = await response.json();
+
+    return res;
 
   }
 
@@ -101,6 +124,20 @@ function App() {
 
   }
 
+  const getUserExpensesForMonth = async (authToken, year, month) => {
+
+    const response = await fetch(backendUrl + `money-expense/getExpensesForMonth?from=${year}-${month}-01&to=${year}-${month}-31`, {
+      headers: {
+        Authorization: `Bearer ${authToken["access_token"]}`
+      }
+    });
+
+    const res = await response.json();
+
+    return res;
+
+  }
+
   const addUserExpense = async (amount, description) => {
 
     await fetch(backendUrl + `money-expense/newExpense?amount=${amount}&description=${description}`, {
@@ -137,13 +174,24 @@ function App() {
 
     const res = await response.json();
 
-
     setInvestments(res);
 
   }
 
   const addUserInvestment = async (amount, returned_amount, title, description) => {
     await fetch(backendUrl + `investment/newInvestment?amount=${amount}&returned_amount=${returned_amount}&title=${title}&description=${description}`, {
+      headers: {
+        Authorization: `Bearer ${userToken["access_token"]}`
+      },
+      method: 'POST',
+    });
+
+    getUserInvestments(userToken);
+
+  }
+  
+  const addReturnedAmount = async (amount, id) => {
+    await fetch(backendUrl + `investment/addReturnedAmount?id=${id}&amount=${amount}`, {
       headers: {
         Authorization: `Bearer ${userToken["access_token"]}`
       },
@@ -169,9 +217,6 @@ function App() {
 
   return (
     <>
-
-      
-
         {
           userToken === null? (
 
@@ -187,13 +232,13 @@ function App() {
                 {
 
                   menu === 0? (
-                    <HomeBar earnings={earnings} expenses={expenses} investments={investments} userInfo={userInfo} showStats={showStats} />
+                    <HomeBar earnings={earnings} expenses={expenses} investments={investments} userInfo={userInfo} showStats={showStats} lastMonthEarnings={lastMonthEarnings} lastMonthExpenses={lastMonthExpenses} />
                   ) : menu === 1? (
                     <Earnings earnings={earnings} deleteEarning={deleteEarning} addEarning={addUserEarning} showStats={showStats} />
                   ) : menu === 2? (
                     <Expenses expenses={expenses} deleteExpense={deleteExpense} addExpense={addUserExpense} showStats={showStats} />
                   ) : menu === 3? (
-                    <Investments investments={investments} deleteInvestment={deleteInvestment} addInvestment={addUserInvestment} showStats={showStats} />
+                    <Investments investments={investments} deleteInvestment={deleteInvestment} addInvestment={addUserInvestment} addReturnedAmount={addReturnedAmount} showStats={showStats} />
                   ) : menu === 4? (
                     <Study />
                   ) : menu === 5? (

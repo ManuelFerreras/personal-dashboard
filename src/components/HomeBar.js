@@ -4,16 +4,16 @@ import "../styles/Cards.css";
 import TextCard from "./TextCard";
 
 
-function HomeBar({ earnings, expenses, investments, userInfo, showStats }) {
+function HomeBar({ earnings, expenses, investments, userInfo, showStats, lastMonthEarnings, lastMonthExpenses }) {
 
     const months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "Dicember"];
     const month = new Date().getMonth() + 1;
 
     let totalEarnings = 0;
-    let lastMonthEarnings = 0;
+    let lastMonthEarningsAmount = 0;
 
     let totalExpenses = 0;
-    let lastMonthExpenses = 0;
+    let lastMonthExpensesAmount = 0;
 
     let totalAddedInvestments = 0;
     let lastMonthAddedInvestments = 0;
@@ -25,7 +25,14 @@ function HomeBar({ earnings, expenses, investments, userInfo, showStats }) {
         totalExpenses -= parseInt(val["amount"])
     ));
     investments.map(val => (
-        totalAddedInvestments += parseInt(val["amount"])
+        totalAddedInvestments += parseInt(val["returned_amount"])
+    ));
+
+    lastMonthEarnings.map(val => (
+        lastMonthEarningsAmount += parseInt(val["amount"])
+    ));
+    lastMonthExpenses.map(val => (
+        lastMonthExpensesAmount -= parseInt(val["amount"])
     ));
 
     return(
@@ -44,10 +51,10 @@ function HomeBar({ earnings, expenses, investments, userInfo, showStats }) {
                     </div>
                     
                     <div className="cards">
-                        <TextCard title="Earnings" body="Total Earnings This Month" number={totalEarnings} comparison={Math.round((totalEarnings * 100 / lastMonthEarnings) - 100)} decorator="$" hidden={showStats} />
-                        <TextCard title="Investments" body="Added Investments This Month" number={totalAddedInvestments} comparison={Math.round((totalAddedInvestments * 100 / lastMonthAddedInvestments) - 100)} decorator="$" hidden={showStats} />
+                        <TextCard title="Earnings" body="Total Earnings This Month" number={totalEarnings} comparison={Math.round((totalEarnings * 100 / lastMonthEarningsAmount) - 100)} decorator="$" hidden={showStats} />
+                        <TextCard title="Investments" body="Returned From Investments This Month" number={totalAddedInvestments} comparison={Math.round((totalAddedInvestments * 100 / lastMonthAddedInvestments) - 100)} decorator="$" hidden={showStats} />
 
-                        <TextCard title="Expenses" body="Total Expenses This Month" number={totalExpenses} comparison={Math.round((totalExpenses * 100 / lastMonthExpenses) - 100) * -1} decorator="$" hidden={showStats} />
+                        <TextCard title="Expenses" body="Total Expenses This Month" number={totalExpenses} comparison={Math.round((totalExpenses * 100 / lastMonthExpensesAmount) - 100) * -1} decorator="$" hidden={showStats} />
                         <TextCard title="Objectives" body="Objectives Achieved This Month" number="1" comparison={52} hidden={showStats} />
                     </div>
                 </div>
