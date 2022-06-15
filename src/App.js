@@ -85,14 +85,21 @@ function App() {
   }
 
   const addUserEarning = async (amount, description) => {
-    await fetch(backendUrl + `money-earning/newEarning?amount=${amount}&description=${description}`, {
-      headers: {
-        Authorization: `Bearer ${userToken["access_token"]}`
-      },
-      method: 'POST',
-    });
 
-    getUserEarnings(userToken);
+    if(!isNaN(amount) && amount) {
+      if(description) {
+            
+        await fetch(backendUrl + `money-earning/newEarning?amount=${amount}&description=${description}`, {
+          headers: {
+            Authorization: `Bearer ${userToken["access_token"]}`
+          },
+          method: 'POST',
+        });
+
+        getUserEarnings(userToken);
+
+      } else {alert("Bad Description Format.")}
+    } else {alert("Bad Amount Format.")}
 
   }
 
@@ -140,14 +147,20 @@ function App() {
 
   const addUserExpense = async (amount, description) => {
 
-    await fetch(backendUrl + `money-expense/newExpense?amount=${amount}&description=${description}`, {
-      headers: {
-        Authorization: `Bearer ${userToken["access_token"]}`
-      },
-      method: 'POST',
-    });
+    if(!isNaN(amount) && amount) {
+      if(description) {
 
-    getUserExpenses(userToken);
+        await fetch(backendUrl + `money-expense/newExpense?amount=${amount}&description=${description}`, {
+          headers: {
+            Authorization: `Bearer ${userToken["access_token"]}`
+          },
+          method: 'POST',
+        });
+
+        getUserExpenses(userToken);
+      
+      } else {alert("Bad Description Format.")}
+    } else {alert("Bad Amount Format.")}
 
   }
 
@@ -179,39 +192,63 @@ function App() {
   }
 
   const addUserInvestment = async (amount, returned_amount, title, description) => {
-    await fetch(backendUrl + `investment/newInvestment?amount=${amount}&returned_amount=${returned_amount}&title=${title}&description=${description}`, {
-      headers: {
-        Authorization: `Bearer ${userToken["access_token"]}`
-      },
-      method: 'POST',
-    });
 
-    getUserInvestments(userToken);
+    if(!isNaN(amount) && amount) {
+      if(!isNaN(returned_amount) && returned_amount) {
+        if(title) {
+          if(description) {
+
+            await fetch(backendUrl + `investment/newInvestment?amount=${amount}&returned_amount=${returned_amount}&title=${title}&description=${description}`, {
+              headers: {
+                Authorization: `Bearer ${userToken["access_token"]}`
+              },
+              method: 'POST',
+            });
+
+            getUserInvestments(userToken);
+
+          } else {alert("Bad Description Format.")}
+        } else {alert("Bad Title Format.")}
+      } else {alert("Bad Returned Amount Format.")}
+    } else {alert("Bad Amount Format.")}
 
   }
   
   const addReturnedAmount = async (amount, id) => {
-    await fetch(backendUrl + `investment/addReturnedAmount?id=${id}&amount=${amount}`, {
-      headers: {
-        Authorization: `Bearer ${userToken["access_token"]}`
-      },
-      method: 'POST',
-    });
 
-    getUserInvestments(userToken);
+    if(id) {
+      if(!isNaN(amount) && amount) {
+      
+        await fetch(backendUrl + `investment/addReturnedAmount?id=${id}&amount=${amount}`, {
+          headers: {
+            Authorization: `Bearer ${userToken["access_token"]}`
+          },
+          method: 'POST',
+        });
+
+        getUserInvestments(userToken);
+
+      } else {alert("Incorrect Amount.")}
+    } else {alert("Invalid Investment.")}
 
   }
 
   const deleteInvestment = async (id) => {
 
-    await fetch(backendUrl + `investment/delInvestment?id=${id}`, {
-      headers: {
-        Authorization: `Bearer ${userToken["access_token"]}`
-      },
-      method: 'POST',
-    });
+    if(id) {
 
-    getUserInvestments(userToken);
+      await fetch(backendUrl + `investment/delInvestment?id=${id}`, {
+        headers: {
+          Authorization: `Bearer ${userToken["access_token"]}`
+        },
+        method: 'POST',
+      });
+
+      getUserInvestments(userToken);
+
+    } else {
+      alert("Invalid Investment.")
+    }
 
   }
 

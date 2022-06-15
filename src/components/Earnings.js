@@ -51,20 +51,9 @@ function Earnings({ earnings, deleteEarning, addEarning, showStats }) {
 
 
                 <div className="bot">
-                    <input className="earning-input" id="earning" placeholder="$0" onChange={(val) => {
-                        if (val["target"].value[0] !== "$") {
-                            let newVal = "$" + val["target"].value.toString();
-                            val["target"].value = newVal;
-                        }
-                        if ((isNaN(val["target"].value[val["target"].value.length - 1]))) {
-                            let newVal = val["target"].value.toString().substring(0, val["target"].value.length - 1);
-                            val["target"].value = newVal;
-                        }
-                    }}></input>
+                    <input className="earning-input" id="earning" placeholder="$100" type="number"></input>
                     <input className="earning-input" id="earning-reason" type="text" min="0" placeholder="Reason"></input>
-                    <button className="btn-add soft-shadow" onClick={() => {
-                        addEarning(document.querySelector("#earning").value.substring(1, document.querySelector("#earning").value.length), document.querySelector("#earning-reason").value);
-                    }}>Add New Earning</button>
+                    <button className="btn-add soft-shadow" onClick={() => {addEarning(document.querySelector("#earning").value, document.querySelector("#earning-reason").value)}}>Add New Earning</button>
                 </div>
             </div>
 
