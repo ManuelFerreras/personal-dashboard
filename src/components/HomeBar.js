@@ -52,10 +52,10 @@ function HomeBar({ earnings, expenses, investments, userInfo, showStats, lastMon
                     
                     <div className="cards">
                         <TextCard title="Earnings" body="Total Earnings This Month" number={totalEarnings} comparison={Math.round((totalEarnings * 100 / lastMonthEarningsAmount) - 100)} decorator="$" hidden={showStats} />
-                        <TextCard title="Investments" body="Returned From Investments This Month" number={totalAddedInvestments} comparison={Math.round((totalAddedInvestments * 100 / lastMonthAddedInvestments) - 100)} decorator="$" hidden={showStats} />
+                        <TextCard title="Net Balance" body="Total Money Balance This Month" number={totalEarnings + totalExpenses} comparison={(totalEarnings + totalExpenses) * 100 / (lastMonthEarningsAmount + lastMonthExpensesAmount) - 100} decorator="$" hidden={showStats} />
 
                         <TextCard title="Expenses" body="Total Expenses This Month" number={totalExpenses} comparison={Math.round((totalExpenses * 100 / lastMonthExpensesAmount) - 100) * -1} decorator="$" hidden={showStats} />
-                        <TextCard title="Objectives" body="Objectives Achieved This Month" number="1" comparison={52} hidden={showStats} />
+                        <TextCard title="Investments" body="Returned From Investments This Month" number={totalAddedInvestments} comparison={Math.round((totalAddedInvestments * 100 / lastMonthAddedInvestments) - 100)} decorator="$" hidden={showStats} />
                     </div>
                 </div>
 
