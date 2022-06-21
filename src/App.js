@@ -5,7 +5,7 @@ import LoginMenu from "./components/LoginMenu";
 import HomeBar from "./components/HomeBar";
 import Earnings from "./components/Earnings";
 import Investments from "./components/Investments";
-import Study from "./components/Study";
+import Todo from "./components/Todo";
 import Excercise from "./components/Excercise";
 import Objectives from "./components/Objectives";
 import Notes from "./components/Notes";
@@ -17,6 +17,7 @@ function App() {
   const backendUrl = "http://localhost:3001/"
 
   const [menu, setMenu] = useState(0);
+  const [todos, setTodos] = useState([]);
   const [earnings, setEarnings] = useState([]);
   const [lastMonthEarnings, setLastMonthEarnings] = useState([]);
   const [expenses, setExpenses] = useState([]);
@@ -43,6 +44,7 @@ function App() {
 
         setEarnings(await getUserEarningsForMonth(authToken, currentDate.getFullYear(), currentDate.getMonth() + 1)); // Get this Month Earnings.
         setExpenses(await getUserExpensesForMonth(authToken, currentDate.getFullYear(), currentDate.getMonth() + 1)); // Get this Month Expenses.
+        setTodos(await getUserTodos(authToken)); // Get this Month Expenses.
       
         setLastMonthEarnings(await getUserEarningsForMonth(authToken, currentDate.getFullYear(), currentDate.getMonth())); // Get Last Month Earnings.
         setLastMonthExpenses(await getUserExpensesForMonth(authToken, currentDate.getFullYear(), currentDate.getMonth())); // Get Last Month Expenses.
@@ -177,6 +179,67 @@ function App() {
 
   }
 
+  const getUserTodos = async (authToken) => {
+
+    const response = await fetch(backendUrl + "todo/getTodos", {
+      headers: {
+        Authorization: `Bearer ${authToken["access_token"]}`
+      }
+    });
+
+    const res = await response.json();
+
+
+    setTodos(res);
+
+  }
+
+  const getUserTodosForMonth = async (authToken, year, month) => {
+
+    const response = await fetch(backendUrl + `todo/getTodosForMonth?from=${year}-${month}-01&to=${year}-${month}-31`, {
+      headers: {
+        Authorization: `Bearer ${authToken["access_token"]}`
+      }
+    });
+
+    const res = await response.json();
+
+    return res;
+
+  }
+
+  const addUserTodo = async (title, description) => {
+
+    if(title) {
+      if(description) {
+
+        await fetch(backendUrl + `todo/newTodo?title=${title}&description=${description}`, {
+          headers: {
+            Authorization: `Bearer ${userToken["access_token"]}`
+          },
+          method: 'POST',
+        });
+
+        getUserTodos(userToken);
+      
+      } else {alert("Bad Description Format.")}
+    } else {alert("Bad Title Format.")}
+
+  }
+
+  const deleteTodo = async (id) => {
+
+    await fetch(backendUrl + `todo/delTodo?id=${id}`, {
+      headers: {
+        Authorization: `Bearer ${userToken["access_token"]}`
+      },
+      method: 'POST',
+    });
+
+    getUserTodos(userToken);
+
+  }
+
   const getUserInvestments = async (authToken) => {
 
     const response = await fetch(backendUrl + "investment/getInvestments", {
@@ -277,7 +340,7 @@ function App() {
                   ) : menu === 3? (
                     <Investments investments={investments} deleteInvestment={deleteInvestment} addInvestment={addUserInvestment} addReturnedAmount={addReturnedAmount} showStats={showStats} />
                   ) : menu === 4? (
-                    <Study />
+                    <Todo todos={todos} deleteTodo={deleteTodo} addTodo={addUserTodo} />
                   ) : menu === 5? (
                     <Excercise />
                   ) : menu === 6? (
