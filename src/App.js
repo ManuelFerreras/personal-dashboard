@@ -44,7 +44,7 @@ function App() {
 
         setEarnings(await getUserEarningsForMonth(authToken, currentDate.getFullYear(), currentDate.getMonth() + 1)); // Get this Month Earnings.
         setExpenses(await getUserExpensesForMonth(authToken, currentDate.getFullYear(), currentDate.getMonth() + 1)); // Get this Month Expenses.
-        setTodos(await getUserTodos(authToken)); // Get this Month Expenses.
+        await getUserTodos(authToken); // Get To Do's.
       
         setLastMonthEarnings(await getUserEarningsForMonth(authToken, currentDate.getFullYear(), currentDate.getMonth())); // Get Last Month Earnings.
         setLastMonthExpenses(await getUserExpensesForMonth(authToken, currentDate.getFullYear(), currentDate.getMonth())); // Get Last Month Expenses.
@@ -188,6 +188,7 @@ function App() {
     });
 
     const res = await response.json();
+    console.log(res);
 
 
     setTodos(res);
@@ -237,6 +238,25 @@ function App() {
     });
 
     getUserTodos(userToken);
+
+  }
+
+  const setTodoDone = async (id, state) => {
+
+    if(id) {
+      if(state !== undefined) {
+      
+        await fetch(backendUrl + `todo/setTodoDone?id=${id}&done=${state}`, {
+          headers: {
+            Authorization: `Bearer ${userToken["access_token"]}`
+          },
+          method: 'POST',
+        });
+
+        getUserTodos(userToken);
+
+      } else {alert("Incorrect State.")}
+    } else {alert("Invalid Id.")}
 
   }
 
@@ -340,7 +360,7 @@ function App() {
                   ) : menu === 3? (
                     <Investments investments={investments} deleteInvestment={deleteInvestment} addInvestment={addUserInvestment} addReturnedAmount={addReturnedAmount} showStats={showStats} />
                   ) : menu === 4? (
-                    <Todo todos={todos} deleteTodo={deleteTodo} addTodo={addUserTodo} />
+                    <Todo todos={todos} setTodoDone={setTodoDone} deleteTodo={deleteTodo} addTodo={addUserTodo} />
                   ) : menu === 5? (
                     <Excercise />
                   ) : menu === 6? (

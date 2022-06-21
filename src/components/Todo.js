@@ -1,17 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
-import TextCard from "./TextCard";
 
 
 
-function Todo({ todos, deleteTodo, addTodo }) {
-
-    let totalTodo = 0;
-    let lastMonthTodo = 0;
-
-    todos.map(val => (
-        totalTodo -= parseInt(val["amount"])
-    ));
+function Todo({ todos, deleteTodo, addTodo, setTodoDone }) {
 
     return(
         <>
@@ -24,30 +16,34 @@ function Todo({ todos, deleteTodo, addTodo }) {
                     </div>
                 </div>
 
-                <div className="mid-container">
+                <div className={todos.length === 0? "mid no-content" : "mid mid-invests"}>
 
-                    <div className={todos.length === 0? "mid no-content" : "mid"}>
-
-                        {todos.length === 0? (
+                    {todos.length === 0? (
                             <p>No To Do's Registered Yet!</p>
                         ) : todos.map((item,index) => {
-                            return ( <div className="entry entry-loss" key={index}>
-                                <p className="entry-value">${item["title"]}</p>
-                                <p>{item["description"]}</p>
+                            return ( 
+                            <div className={item["done"] ? "card-entry entry-prof" : "card-entry entry-loss"} key={index}>
+                                <h2 className="text-center">{item["title"]}</h2>
+                                <p>Description: {item["description"]}</p>
                                 <FontAwesomeIcon icon={faXmark} className="delete-entry" onClick={() => {
                                     deleteTodo(item["_id"]);
                                 }} />
-                            </div> );
-                        })}
-
-                    </div>
+                                <button className={item["done"] ? "btn-add btn-add-investment-profit soft-shadow" : "btn-add btn-add-investment-loss soft-shadow"} onClick={() => {
+                                    if (item["done"] == false) {
+                                        setTodoDone(item["_id"], true);
+                                    } else {
+                                        setTodoDone(item["_id"], false);
+                                    }
+                                }}>{item["done"] == false ? "Mark as Complete" : "Mark as Pending"}</button>
+                        </div> );
+                    })}
 
                 </div>
 
 
                 <div className="bot">
-                    <input className="todo-input" id="todo-title" placeholder="Title" type="text"></input>
-                    <input className="todo-input" id="todo-reason" type="text" placeholder="To Do Description"></input>
+                    <input className="earning-input" id="todo-title" placeholder="Title" type="text"></input>
+                    <input className="earning-input" id="todo-reason" type="text" placeholder="To Do Description"></input>
                     <button className="btn-add soft-shadow" onClick={() => {addTodo(document.querySelector("#todo-title").value, document.querySelector("#todo-reason").value)}}>Add New Todo</button>
                 </div>
             </div>
